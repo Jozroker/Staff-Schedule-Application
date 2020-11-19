@@ -2,7 +2,6 @@ package server.service.impl;
 
 import server.domain.Position;
 import server.dto.PositionDTO;
-import server.error.NoneRecordsBeFoundException;
 import server.error.ResourceNotFoundException;
 import server.repository.PositionRepository;
 import server.repository.impl.PositionRepositoryImpl;
@@ -74,7 +73,7 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
-    public List<PositionDTO> findBySalary(Double min, Double max) throws NoneRecordsBeFoundException {
+    public List<PositionDTO> findBySalary(Double min, Double max) {
         List<Position> positionList = pr.findBySalary(BigDecimal.valueOf(min),
                 BigDecimal.valueOf(max));
         List<PositionDTO> listDTO = new ArrayList<>();
@@ -82,8 +81,6 @@ public class PositionServiceImpl implements PositionService {
             for (Position position : positionList) {
                 listDTO.add(pm.toDTO(position));
             }
-        } else {
-            throw new NoneRecordsBeFoundException();
         }
         return listDTO;
     }

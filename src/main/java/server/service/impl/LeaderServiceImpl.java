@@ -2,7 +2,6 @@ package server.service.impl;
 
 import server.domain.Leader;
 import server.dto.LeaderDTO;
-import server.error.NoneRecordsBeFoundException;
 import server.error.ResourceNotFoundException;
 import server.repository.LeaderRepository;
 import server.repository.impl.LeaderRepositoryImpl;
@@ -43,15 +42,13 @@ public class LeaderServiceImpl implements LeaderService {
     }
 
     @Override
-    public List<LeaderDTO> findByLastName(String lastName) throws NoneRecordsBeFoundException {
+    public List<LeaderDTO> findByLastName(String lastName) {
         List<Leader> list = lr.findByLastName(lastName);
         List<LeaderDTO> listDTO = new ArrayList<>();
         if (!list.isEmpty()) {
             for (Leader leader : list) {
                 listDTO.add(lm.toDTO(leader));
             }
-        } else {
-            throw new NoneRecordsBeFoundException();
         }
         return listDTO;
     }

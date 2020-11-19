@@ -88,6 +88,7 @@ public class Main extends Application {
         primaryStage.setWidth(795);
 //        table.setGridLinesVisible(true);
         primaryStage.setHeight(300);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
