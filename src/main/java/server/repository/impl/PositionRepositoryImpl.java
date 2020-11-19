@@ -88,8 +88,16 @@ public class PositionRepositoryImpl implements PositionRepository {
     public List<Position> findBySalary(BigDecimal min, BigDecimal max) {
         TypedQuery<Position> query = em.createNamedQuery(
                 "findPositionBySalary", Position.class);
-        query.setParameter(1, min);
-        query.setParameter(2, max);
+        if (min == null) {
+            query.setParameter(1, BigDecimal.valueOf(0.01));
+            query.setParameter(2, max);
+        } else if (max == null) {
+            query.setParameter(1, min);
+            query.setParameter(2, BigDecimal.valueOf(Double.MAX_VALUE));
+        } else {
+            query.setParameter(1, min);
+            query.setParameter(2, max);
+        }
         return query.getResultList();
     }
 }

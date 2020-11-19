@@ -74,9 +74,24 @@ public class PositionServiceImpl implements PositionService {
 
     @Override
     public List<PositionDTO> findBySalary(Double min, Double max) {
-        List<Position> positionList = pr.findBySalary(BigDecimal.valueOf(min),
-                BigDecimal.valueOf(max));
+        BigDecimal minSalary = BigDecimal.valueOf(min);
+        BigDecimal maxSalary = BigDecimal.valueOf(max);
+        List<Position> positionList = pr.findAll();
         List<PositionDTO> listDTO = new ArrayList<>();
+        if (min != 0) {
+            List<Position> positionBySalary;
+            if (max != 0) {
+                positionBySalary = pr.findBySalary(minSalary, maxSalary);
+            } else {
+                positionBySalary = pr.findBySalary(minSalary, null);
+            }
+            positionList =
+                    positionList.stream().distinct().filter(positionBySalary::contains).collect(Collectors.toList());
+        } else if (max != 0) {
+            List<Position> positionBySalary = pr.findBySalary(null, maxSalary);
+            positionList =
+                    positionList.stream().distinct().filter(positionBySalary::contains).collect(Collectors.toList());
+        }
         if (!positionList.isEmpty()) {
             for (Position position : positionList) {
                 listDTO.add(pm.toDTO(position));

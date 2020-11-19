@@ -113,6 +113,8 @@ public final class Grids {
         nameField.setMaxWidth(180);
         minSalaryField.setMaxWidth(70);
         maxSalaryField.setMaxWidth(70);
+        minSalaryField.setEditable(true);
+        maxSalaryField.setEditable(true);
 
         positionGrid.getColumnConstraints().addAll(new ColumnConstraints(200),
                 new ColumnConstraints(150), new ColumnConstraints(100));
@@ -136,20 +138,8 @@ public final class Grids {
             try {
                 List<PositionDTO> filteringPositions = positions;
                 if (nameField.getText().equals("")) {
-                    if (minSalaryField.getValue() != 0) {
-                        if (maxSalaryField.getValue() != 0) {
-                            filteringPositions =
-                                    positionService.findBySalary(minSalaryField.getValue(), maxSalaryField.getValue());
-                        } else {
-                            filteringPositions =
-                                    positionService.findBySalary(minSalaryField.getValue(), minSalaryField.getValue());
-                        }
-                    } else {
-                        if (maxSalaryField.getValue() != 0) {
-                            filteringPositions =
-                                    positionService.findBySalary(maxSalaryField.getValue(), maxSalaryField.getValue());
-                        }
-                    }
+                    filteringPositions =
+                            positionService.findBySalary(minSalaryField.getValue(), maxSalaryField.getValue());
                 } else {
                     filteringPositions = Collections.singletonList(
                             positionService.findByName(nameField.getText()));
@@ -422,6 +412,19 @@ public final class Grids {
         HBox stageField = new HBox(stageLabel1, stageSpinner1, stageLabel2,
                 stageSpinner2);
 
+        stageSpinner1.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                stageSpinner1.increment(0);
+            }
+        });
+
+        stageSpinner2.focusedProperty().addListener((observable, oldValue,
+                                                     newValue) -> {
+            if (!newValue) {
+                stageSpinner2.increment(0);
+            }
+        });
+
         addButton.setPrefWidth(100);
         addButton.setPrefHeight(18);
         findButton.setPrefWidth(80);
@@ -440,6 +443,8 @@ public final class Grids {
         unitField.setMaxWidth(130);
         stageSpinner1.setMaxWidth(70);
         stageSpinner2.setMaxWidth(70);
+        stageSpinner1.setEditable(true);
+        stageSpinner2.setEditable(true);
 
         workerGrid.getColumnConstraints().addAll(new ColumnConstraints(180),
                 new ColumnConstraints(110), new ColumnConstraints(150),
