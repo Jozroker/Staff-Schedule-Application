@@ -5,7 +5,6 @@ import server.dto.PositionDTO;
 import server.dto.ShiftDTO;
 import server.dto.UnitDTO;
 import server.dto.WorkerDTO;
-import server.error.NoneRecordsBeFoundException;
 import server.error.ResourceNotFoundException;
 import server.repository.WorkerRepository;
 import server.repository.impl.WorkerRepositoryImpl;
@@ -41,15 +40,13 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public List<WorkerDTO> findByLastName(String lastName) throws NoneRecordsBeFoundException {
+    public List<WorkerDTO> findByLastName(String lastName) {
         List<Worker> workerList = wr.findByLastName(lastName);
         List<WorkerDTO> listDTO = new ArrayList<>();
         if (!workerList.isEmpty()) {
             for (Worker worker : workerList) {
                 listDTO.add(wm.toDTO(worker));
             }
-        } else {
-            throw new NoneRecordsBeFoundException();
         }
         return listDTO;
     }
@@ -74,7 +71,7 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public List<WorkerDTO> findByParameters(ShiftDTO shift, Integer min,
                                             Integer max, UnitDTO unit,
-                                            PositionDTO position) throws NoneRecordsBeFoundException {
+                                            PositionDTO position) {
         List<Worker> workerList = wr.findAll();
         List<WorkerDTO> listDTO = new ArrayList<>();
         if (shift != null) {
@@ -109,9 +106,6 @@ public class WorkerServiceImpl implements WorkerService {
         }
         for (Worker worker : workerList) {
             listDTO.add(wm.toDTO(worker));
-        }
-        if (listDTO.isEmpty()) {
-            throw new NoneRecordsBeFoundException();
         }
 
         return listDTO;

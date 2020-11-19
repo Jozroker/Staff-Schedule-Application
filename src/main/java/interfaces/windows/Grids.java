@@ -471,12 +471,24 @@ public final class Grids {
                     filteringWorkers = Collections.singletonList(
                             workerService.findByPhone(phoneField.getText()));
                 } else {
-                    ShiftDTO tempShift =
-                            (ShiftDTO) shiftField.getSelectionModel().getSelectedItem().getUserData();
-                    UnitDTO tempUnit =
-                            (UnitDTO) unitField.getSelectionModel().getSelectedItem().getUserData();
-                    PositionDTO tempPosition =
-                            (PositionDTO) positionField.getSelectionModel().getSelectedItem().getUserData();
+                    ShiftDTO tempShift = null;
+                    UnitDTO tempUnit = null;
+                    PositionDTO tempPosition = null;
+                    try {
+                        tempPosition =
+                                (PositionDTO) positionField.getSelectionModel().getSelectedItem().getUserData();
+                    } catch (Exception ignore) {
+                    }
+                    try {
+                        tempUnit =
+                                (UnitDTO) unitField.getSelectionModel().getSelectedItem().getUserData();
+                    } catch (Exception ignore) {
+                    }
+                    try {
+                        tempShift =
+                                (ShiftDTO) shiftField.getSelectionModel().getSelectedItem().getUserData();
+                    } catch (Exception ignore) {
+                    }
                     int minStage = stageSpinner1.getValue();
                     int maxStage = stageSpinner2.getValue();
                     filteringWorkers =

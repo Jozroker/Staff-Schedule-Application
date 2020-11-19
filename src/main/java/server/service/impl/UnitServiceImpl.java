@@ -4,7 +4,6 @@ import server.domain.Unit;
 import server.dto.LeaderDTO;
 import server.dto.UnitDTO;
 import server.dto.WorkerDTO;
-import server.error.NoneRecordsBeFoundException;
 import server.error.ResourceNotFoundException;
 import server.repository.UnitRepository;
 import server.repository.impl.UnitRepositoryImpl;
@@ -49,29 +48,25 @@ public class UnitServiceImpl implements UnitService {
     }
 
     @Override
-    public List<UnitDTO> findByLeader(LeaderDTO leader) throws NoneRecordsBeFoundException {
+    public List<UnitDTO> findByLeader(LeaderDTO leader) {
         List<Unit> unitList = ur.findByLeader(lm.toEntity(leader));
         List<UnitDTO> listDTO = new ArrayList<>();
         if (!unitList.isEmpty()) {
             for (Unit unit : unitList) {
                 listDTO.add(um.toDTO(unit));
             }
-        } else {
-            throw new NoneRecordsBeFoundException();
         }
         return listDTO;
     }
 
     @Override
-    public List<UnitDTO> findByWorker(WorkerDTO worker) throws NoneRecordsBeFoundException {
+    public List<UnitDTO> findByWorker(WorkerDTO worker) {
         List<Unit> unitList = ur.findByWorker(wm.toEntity(worker));
         List<UnitDTO> listDTO = new ArrayList<>();
         if (!unitList.isEmpty()) {
             for (Unit unit : unitList) {
                 listDTO.add(um.toDTO(unit));
             }
-        } else {
-            throw new NoneRecordsBeFoundException();
         }
         return listDTO;
     }
@@ -108,7 +103,7 @@ public class UnitServiceImpl implements UnitService {
 
     @Override
     public List<UnitDTO> findByLeaderAndWorker(LeaderDTO leader,
-                                               WorkerDTO worker) throws NoneRecordsBeFoundException {
+                                               WorkerDTO worker) {
         List<Unit> unitList1 = ur.findByLeader(lm.toEntity(leader));
         List<Unit> unitList2 = ur.findByWorker(wm.toEntity(worker));
         List<UnitDTO> listDTO = new ArrayList<>();
@@ -126,8 +121,6 @@ public class UnitServiceImpl implements UnitService {
             for (Unit unit : unitList2) {
                 listDTO.add(um.toDTO(unit));
             }
-        } else {
-            throw new NoneRecordsBeFoundException();
         }
         return listDTO;
     }
